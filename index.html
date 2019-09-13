@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Plunker</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <link rel="stylesheet" href="style.css" />
+    <script data-require="angular.js@1.5.x" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.11/angular.min.js" data-semver="1.5.11"></script>
+    <script src="app.js"></script>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <!-- Compiled and minified JavaScript -->
+    <style>
+      .welcome_message{
+        margin:auto;
+        margin-top:100px;
+        text-align: center;
+      }
+      .modal{
+        width:60%;
+        top:100px;
+      }
+      .card-title{
+        margin-left:20px;
+      }
+      .spaceAroundMe{
+        position:relative;
+        float:right;
+        right:20px;
+        margin:auto;
+      }
+      .closeAlign{
+        position: absolute;
+        right: 20px;
+      }
+    </style>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+  </head>
+
+  <body ng-controller="MainCtrl">
+  	<!-- Modal Trigger -->
+    <div class="spaceAroundMe">
+      <button class="btn" ng-if="user" onclick="localStorage.removeItem('user');window.location.reload()">Remove User</button>
+    </div>
+    <p class="welcome_message">{{welcomeMessage}}!
+      <br>
+      <button class="btn modal-trigger" data-toggle="modal" data-target="#{{actionButton}}" ng-disabled="actionButtonDisable">{{actionButtonText}}</button>
+    </p>
+      
+      <div ng-if="showDataCard" class="col-6 offset-3">
+        <div class="card">
+          <div class="card-title">Username: {{user.username}}</div>
+          <div class="card-content">
+            <div>Email: {{user.email}}</div>
+            <div>Address: {{user.address}}</div>
+            <div>Telephone Number: {{user.phone}}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="registerModal" class="modal">
+        <div class="modal-content">
+        <button type="button" class="close closeAlign" data-dismiss="modal">&times;</button>
+          <form method="post" name="registerForm" ng-submit="register()">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" name="username" ng-model="data.username" ng-class="{error: errors.username}" ng-change="errors.username"/>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="text" name="email" ng-model="data.email" ng-class="{error: errors.email}" ng-change="errors.email" />
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="text" name="phone" ng-model="data.phone" ng-class="{error: errors.phone}" ng-change="errors.phone" />
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" name="address" ng-model="data.address" ng-class="{error: errors.address}" ng-change="errors.address" />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" name="password" ng-model="data.password" ng-class="{error: errors.password}" ng-change="errors.password"/>
+              <i class="material-icons" onclick="showPassword($(this).prev())">remove_red_eye</i>
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" name="confirmPassword" ng-model="data.confirmPassword" ng-class="{error: errors.confirmPassword}" ng-change="errors.confirmPassword"/>
+              <i class="material-icons" onclick="showPassword($(this).prev())">remove_red_eye</i>
+            </div>
+            <div class="form-group">
+              <p>
+                <label>
+                  <input type="checkbox" ng-model="data.rememberMe" />
+                  <span>Remember Me</span>
+                </label>
+              </p>
+            </div>
+    
+            <div class="error" id="report-error">
+              <span ng-repeat="error in errors" ng-if="error">@{{ error[0] }}<br></span>
+            </div>
+            <input type="submit" ng-disabled="registrationFormValid" />
+          </form>
+        </div>
+      </div>
+      
+      <div id="loginModal" class="modal">
+        <div class="modal-content">
+          <button type="button" class="close closeAlign" data-dismiss="modal">&times;</button>
+          <form method="post" name="loginForm" ng-submit="login()">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" name="username" ng-model="data.username" ng-class="{error: errors.username}" ng-change="errors.username"/>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" name="password" ng-model="data.password" ng-class="{error: errors.password}" ng-change="errors.password"/>
+              <i class="material-icons">pencil</i>
+            </div>
+    
+            <div class="error" id="report-error">
+              <span ng-repeat="error in errors" ng-if="error">@{{ error[0] }}<br></span>
+            </div>
+            <input type="submit"/>
+          </form>
+        </div>
+      </div>
+
+   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+   <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#modal1').modal();
+    });
+
+    function modalToggle(id){
+    	$('#'+id).modal();
+    }
+    function showPassword(el){
+      if(el.attr('type') === 'password'){
+        el.attr('type', 'text')
+      }else{
+        el.attr('type', 'password')        
+      }
+    }
+  </script>
+  </body>
+
+</html>
